@@ -195,3 +195,41 @@ export async function deleteAdminProduct(id) {
   if (!response.ok) throw new Error(data.message || data.error || 'Error al eliminar el producto');
   return data;
 }
+
+// 5. Orders & Sales Analytics
+export async function getAdminOrders() {
+  const response = await fetch('/.netlify/functions/admin-orders', {
+    method: 'GET',
+    headers: getAuthHeaders(),
+    credentials: 'include'
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || data.error || 'Error al consultar métricas de ventas');
+  return data;
+}
+
+export async function createAdminOrder(orderData) {
+  const response = await fetch('/.netlify/functions/admin-orders', {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    credentials: 'include',
+    body: JSON.stringify(orderData)
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || data.error || 'Error al registrar la venta');
+  return data;
+}
+
+export async function clearAdminOrders() {
+  const response = await fetch('/.netlify/functions/admin-orders', {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+    credentials: 'include'
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || data.error || 'Error al reiniciar ventas');
+  return data;
+}

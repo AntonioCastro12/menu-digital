@@ -1,0 +1,294 @@
+[
+  {
+    "id": "ord_1793044777448_k76l",
+    "customerName": "Cliente Prueba E2E",
+    "orderType": "dineIn",
+    "tableNumber": "9",
+    "deliveryAddress": "",
+    "notes": "",
+    "items": [
+      {
+        "name": "Orden Entera de patitas de puerco",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": [],
+        "notes": ""
+      },
+      {
+        "name": "Media Orden de Patita de Puerco",
+        "price": 70,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": [],
+        "notes": ""
+      }
+    ],
+    "totalAmount": 180,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T19:59:37.448Z"
+  },
+  {
+    "id": "ord_1793041001_a1",
+    "customerName": "Juan Pérez",
+    "orderType": "dineIn",
+    "tableNumber": "3",
+    "items": [
+      {
+        "name": "Orden Entera de patitas de puerco",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Salsa",
+        "price": 10,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T17:30:00.000Z"
+  },
+  {
+    "id": "ord_1793041002_b2",
+    "customerName": "Laura Gómez",
+    "orderType": "delivery",
+    "deliveryAddress": "Av. Las Rosas 120, Col. Centro",
+    "items": [
+      {
+        "name": "Contenedor Grande",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [
+          "Cueritos",
+          "Pata Picada",
+          "Oreja"
+        ],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Tostadas extras",
+        "price": 10,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T16:15:00.000Z"
+  },
+  {
+    "id": "ord_1793041003_c3",
+    "customerName": "Carlos Mendoza",
+    "orderType": "takeout",
+    "items": [
+      {
+        "name": "Media Orden de Patita de Puerco",
+        "price": 70,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": [
+          "Salsa Bandera"
+        ]
+      },
+      {
+        "name": "Tostada de Queso de Puerco",
+        "price": 30,
+        "quantity": 2,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 130,
+    "itemCount": 3,
+    "status": "completed",
+    "createdAt": "2026-10-26T15:45:00.000Z"
+  },
+  {
+    "id": "ord_1793041004_d4",
+    "customerName": "María Rodríguez",
+    "orderType": "dineIn",
+    "tableNumber": "1",
+    "items": [
+      {
+        "name": "Tostadas dobles",
+        "price": 60,
+        "quantity": 2,
+        "selectedCombinations": [
+          "Pata picada",
+          "Ceviche"
+        ],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T15:10:00.000Z"
+  },
+  {
+    "id": "ord_1793041005_e5",
+    "customerName": "Fernando Soto",
+    "orderType": "delivery",
+    "deliveryAddress": "Privada Hidalgo #14",
+    "items": [
+      {
+        "name": "Orden Entera de patitas de puerco",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Contenedor chico",
+        "price": 80,
+        "quantity": 1,
+        "selectedCombinations": [
+          "Cueritos",
+          "Queso de puerco"
+        ],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 190,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T14:30:00.000Z"
+  },
+  {
+    "id": "ord_1793041006_f6",
+    "customerName": "Patricia Morales",
+    "orderType": "dineIn",
+    "tableNumber": "5",
+    "items": [
+      {
+        "name": "Tostada Pata Picada",
+        "price": 30,
+        "quantity": 3,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Tostadas extras",
+        "price": 10,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 100,
+    "itemCount": 4,
+    "status": "completed",
+    "createdAt": "2026-10-25T18:45:00.000Z"
+  },
+  {
+    "id": "ord_1793041007_g7",
+    "customerName": "Roberto Silva",
+    "orderType": "takeout",
+    "items": [
+      {
+        "name": "Orden Entera de patitas de puerco",
+        "price": 110,
+        "quantity": 2,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 220,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-25T17:20:00.000Z"
+  },
+  {
+    "id": "ord_1793041008_h8",
+    "customerName": "Elena Morales",
+    "orderType": "dineIn",
+    "tableNumber": "2",
+    "items": [
+      {
+        "name": "Media Orden de Patita de Puerco",
+        "price": 70,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Tostada Ceviche",
+        "price": 30,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 100,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-25T16:00:00.000Z"
+  },
+  {
+    "id": "ord_1793041009_i9",
+    "customerName": "Miguel Ángel Vázquez",
+    "orderType": "delivery",
+    "deliveryAddress": "Calle Morelos 45, Col. Juárez",
+    "items": [
+      {
+        "name": "Contenedor Grande",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [
+          "Cueritos",
+          "Carne tartara"
+        ],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Contenedor chico",
+        "price": 80,
+        "quantity": 1,
+        "selectedCombinations": [
+          "Ceviche",
+          "Pata Picada"
+        ],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 190,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-24T18:10:00.000Z"
+  },
+  {
+    "id": "ord_1793041010_j10",
+    "customerName": "Daniela Cruz",
+    "orderType": "dineIn",
+    "tableNumber": "4",
+    "items": [
+      {
+        "name": "Tostada Carne Tartara",
+        "price": 30,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      },
+      {
+        "name": "Tostada de Oreja",
+        "price": 30,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": []
+      }
+    ],
+    "totalAmount": 60,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-24T15:20:00.000Z"
+  }
+]

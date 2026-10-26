@@ -12,7 +12,9 @@ function netlifyFunctionsDevPlugin() {
     'admin-settings': () => import('./netlify/functions/admin-settings.js'),
     'admin-categories': () => import('./netlify/functions/admin-categories.js'),
     'admin-products': () => import('./netlify/functions/admin-products.js'),
-    'admin-images': () => import('./netlify/functions/admin-images.js')
+    'admin-images': () => import('./netlify/functions/admin-images.js'),
+    'orders': () => import('./netlify/functions/orders.js'),
+    'admin-orders': () => import('./netlify/functions/admin-orders.js')
   };
 
   return {

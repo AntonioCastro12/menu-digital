@@ -6,6 +6,8 @@ import { handler as categoriesHandler } from './netlify/functions/admin-categori
 import { handler as settingsHandler } from './netlify/functions/admin-settings.js';
 import { handler as imagesHandler } from './netlify/functions/admin-images.js';
 import { handler as menuImageHandler } from './netlify/functions/menu-image.js';
+import { handler as ordersHandler } from './netlify/functions/orders.js';
+import { handler as adminOrdersHandler } from './netlify/functions/admin-orders.js';
 
 async function runTests() {
   console.log('--- INICIANDO SUITE DE PRUEBAS AUTOMATIZADAS ---');
@@ -158,7 +160,7 @@ async function runTests() {
   console.log('-> Prueba 7 PASÓ con éxito.');
 
   // TEST 8: Delete Product & Cleanup
-  console.log('\n[8/8] Probando DELETE /.netlify/functions/admin-products...');
+  console.log('\n[8/10] Probando DELETE /.netlify/functions/admin-products...');
   const delProdRes = await productsHandler({
     httpMethod: 'DELETE',
     headers: { authorization: `Bearer ${authToken}` },
@@ -167,9 +169,48 @@ async function runTests() {
   console.log('Status code (esperado 200):', delProdRes.statusCode);
   console.log('-> Prueba 8 PASÓ con éxito.');
 
-  console.log('\n=========================================');
-  console.log('¡TODAS LAS 8 PRUEBAS PASARON EXITOSAMENTE!');
-  console.log('=========================================\n');
+  // TEST 9: Orders (Customer WhatsApp checkout order)
+  console.log('\n[9/10] Probando POST /.netlify/functions/orders...');
+  const orderRes = await ordersHandler({
+    httpMethod: 'POST',
+    headers: {},
+    body: JSON.stringify({
+      customerName: 'Cliente Prueba E2E',
+      orderType: 'dineIn',
+      tableNumber: '9',
+      totalAmount: 180,
+      items: [
+        { name: 'Orden Entera de patitas de puerco', price: 110, quantity: 1 },
+        { name: 'Media Orden de Patita de Puerco', price: 70, quantity: 1 }
+      ]
+    })
+  }, {});
+  console.log('Status code (esperado 201):', orderRes.statusCode);
+  const orderData = JSON.parse(orderRes.body);
+  console.log('Pedido registrado con ID:', orderData.orderId);
+  if (orderRes.statusCode !== 201 || !orderData.orderId) throw new Error('Fallo al registrar pedido');
+  console.log('-> Prueba 9 PASÓ con éxito.');
+
+  // TEST 10: Admin Sales Metrics Analytics
+  console.log('\n[10/10] Probando GET /.netlify/functions/admin-orders...');
+  const metricsRes = await adminOrdersHandler({
+    httpMethod: 'GET',
+    headers: { authorization: `Bearer ${authToken}` }
+  }, {});
+  console.log('Status code (esperado 200):', metricsRes.statusCode);
+  const metricsData = JSON.parse(metricsRes.body);
+  console.log('Ventas totales calculadas: $' + metricsData.metrics.totalSales);
+  console.log('Total de pedidos:', metricsData.metrics.totalOrders);
+  console.log('Ticket promedio: $' + metricsData.metrics.averageTicket);
+  console.log('Top producto:', metricsData.metrics.topProducts[0]?.name);
+  if (metricsRes.statusCode !== 200 || typeof metricsData.metrics.totalSales !== 'number') {
+    throw new Error('Fallo en analítica de métricas de venta');
+  }
+  console.log('-> Prueba 10 PASÓ con éxito.');
+
+  console.log('\n==========================================');
+  console.log('¡TODAS LAS 10 PRUEBAS PASARON EXITOSAMENTE!');
+  console.log('==========================================\n');
 }
 
 runTests().catch(err => {

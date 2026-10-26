@@ -6,6 +6,7 @@ import ProductDetailModal from '../components/menu/ProductDetailModal';
 import CartDrawer from '../components/menu/CartDrawer';
 import CartFloatingButton from '../components/menu/CartFloatingButton';
 import MenuFooter from '../components/menu/MenuFooter';
+import MenuIntroSplash from '../components/menu/MenuIntroSplash';
 import { useCart } from '../hooks/useCart';
 import { Search, X, UtensilsCrossed, RefreshCw } from 'lucide-react';
 
@@ -103,6 +104,9 @@ export default function PublicMenu({
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 flex flex-col relative pb-20">
+      {/* Intro Splash Animation when opening menu */}
+      <MenuIntroSplash settings={settings} />
+
       {/* Restaurant Header */}
       <MenuHeader
         settings={settings}

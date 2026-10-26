@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { formatCurrency } from '../../utils/formatters';
 import Badge from '../shared/Badge';
-import { Utensils, Plus, Check } from 'lucide-react';
+import { Utensils, Plus } from 'lucide-react';
 
 export default function ProductCard({ product, currency = 'MXN', onClick }) {
   const [imageError, setImageError] = useState(false);
@@ -33,8 +33,8 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
   return (
     <div
       onClick={() => onClick(product)}
-      className={`group relative bg-white rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden cursor-pointer flex flex-col justify-between ${
-        !available ? 'opacity-75 bg-stone-50/80' : 'hover:-translate-y-0.5'
+      className={`group relative bg-white rounded-3xl border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between transform hover:-translate-y-1.5 ${
+        !available ? 'opacity-75 bg-stone-50/80' : ''
       }`}
     >
       {/* Image container */}
@@ -45,13 +45,13 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
             alt={name}
             loading="lazy"
             onError={() => setImageError(true)}
-            className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+            className={`w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110 ${
               !available ? 'grayscale contrast-75' : ''
             }`}
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 bg-stone-100 p-4">
-            <Utensils className="w-10 h-10 mb-1 opacity-50" />
+            <Utensils className="w-10 h-10 mb-1 opacity-40 group-hover:scale-110 transition-transform duration-300" />
             <span className="text-[11px] font-medium text-stone-400">Sin foto</span>
           </div>
         )}
@@ -69,7 +69,7 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
 
         {/* Sold out semi-transparent banner */}
         {!available && (
-          <div className="absolute inset-0 bg-stone-900/40 backdrop-blur-[1px] flex items-center justify-center">
+          <div className="absolute inset-0 bg-stone-900/50 backdrop-blur-[1px] flex items-center justify-center">
             <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-stone-800/90 shadow">
               Temporalmente no disponible
             </span>
@@ -78,7 +78,7 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
       </div>
 
       {/* Card Body */}
-      <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between">
+      <div className="p-4 flex flex-col flex-1 justify-between">
         <div>
           <h3 className="font-bold text-stone-900 text-sm sm:text-base leading-snug group-hover:text-orange-600 transition-colors line-clamp-2">
             {name}
@@ -90,7 +90,7 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
           )}
 
           {isCombine && maxComb > 0 ? (
-            <div className="mt-2 flex items-center gap-1 text-[10px] text-orange-800 font-bold bg-orange-100 px-2 py-0.5 rounded-md inline-flex border border-orange-200">
+            <div className="mt-2 flex items-center gap-1 text-[10px] text-orange-800 font-bold bg-orange-100/80 px-2 py-0.5 rounded-md inline-flex border border-orange-200 shadow-xs">
               <span>✨ Combina hasta {maxComb} ingredientes</span>
             </div>
           ) : hasIngredients ? (
@@ -111,7 +111,7 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
             </span>
           </div>
 
-          <span className="text-xs font-bold text-orange-600 bg-orange-50 hover:bg-orange-600 hover:text-white py-1.5 px-3 rounded-xl transition flex items-center gap-1">
+          <span className="text-xs font-black text-orange-600 bg-orange-50 group-hover:bg-orange-600 group-hover:text-white py-1.5 px-3 rounded-xl transition-all duration-200 active:scale-90 flex items-center gap-1 shadow-xs">
             <Plus className="w-3.5 h-3.5" />
             <span>Agregar</span>
           </span>

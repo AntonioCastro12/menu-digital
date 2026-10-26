@@ -12,6 +12,7 @@ import {
   Utensils
 } from 'lucide-react';
 import { formatCurrency, buildWhatsAppLink } from '../../utils/formatters';
+import { recordCustomerOrder } from '../../services/menuService';
 
 export default function CartDrawer({
   isOpen,
@@ -105,6 +106,24 @@ export default function CartDrawer({
 
     const messageText = lines.join('\n');
     const waUrl = buildWhatsAppLink(whatsappNumber, messageText);
+
+    // Save order in Netlify Blobs for real-time sales metrics
+    recordCustomerOrder({
+      customerName: customerName.trim(),
+      orderType,
+      tableNumber: tableNumber.trim(),
+      deliveryAddress: deliveryAddress.trim(),
+      notes: generalNotes.trim(),
+      totalAmount: totalPrice,
+      items: cart.map(it => ({
+        name: it.name,
+        price: it.price,
+        quantity: it.quantity,
+        selectedCombinations: it.selectedCombinations || [],
+        excludedIngredients: it.excludedIngredients || [],
+        notes: it.notes || ''
+      }))
+    });
 
     // Open WhatsApp
     window.open(waUrl, '_blank');

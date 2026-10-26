@@ -2,7 +2,7 @@ import { getStore, connectLambda } from '@netlify/blobs';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { INITIAL_SETTINGS, INITIAL_CATEGORIES, INITIAL_PRODUCTS } from './seedData.js';
+import { INITIAL_SETTINGS, INITIAL_CATEGORIES, INITIAL_PRODUCTS, INITIAL_ORDERS } from './seedData.js';
 
 // Determine bundled storage directory safely across CommonJS, ESM and Lambda
 function resolveBundledDir() {
@@ -319,4 +319,53 @@ export async function getProducts() {
 export async function saveProducts(productsList) {
   await setStoreJSON('menu_products', 'all', productsList);
   return productsList;
+}
+
+// 4. Orders & Sales Metrics
+export async function getOrders() {
+  const current = await getStoreJSON('menu_orders', 'all', null);
+  if (!current || !Array.isArray(current)) {
+    await setStoreJSON('menu_orders', 'all', INITIAL_ORDERS);
+    return INITIAL_ORDERS;
+  }
+  return current;
+}
+
+export async function recordOrder(orderInput) {
+  const existingOrders = await getOrders();
+  const newOrder = {
+    id: `ord_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    customerName: (orderInput.customerName || 'Cliente').trim().slice(0, 100),
+    orderType: ['dineIn', 'takeout', 'delivery'].includes(orderInput.orderType)
+      ? orderInput.orderType
+      : 'dineIn',
+    tableNumber: (orderInput.tableNumber || '').trim().slice(0, 50),
+    deliveryAddress: (orderInput.deliveryAddress || '').trim().slice(0, 250),
+    notes: (orderInput.notes || '').trim().slice(0, 300),
+    items: Array.isArray(orderInput.items)
+      ? orderInput.items.map(it => ({
+          name: String(it.name || '').slice(0, 100),
+          price: Number(it.price) || 0,
+          quantity: Number(it.quantity) || 1,
+          selectedCombinations: Array.isArray(it.selectedCombinations) ? it.selectedCombinations : [],
+          excludedIngredients: Array.isArray(it.excludedIngredients) ? it.excludedIngredients : [],
+          notes: (it.notes || '').slice(0, 200)
+        }))
+      : [],
+    totalAmount: Math.max(0, Number(orderInput.totalAmount) || 0),
+    itemCount: Array.isArray(orderInput.items)
+      ? orderInput.items.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0)
+      : (Number(orderInput.itemCount) || 1),
+    status: orderInput.status || 'completed',
+    createdAt: new Date().toISOString()
+  };
+
+  const updatedOrders = [newOrder, ...existingOrders];
+  await setStoreJSON('menu_orders', 'all', updatedOrders);
+  return newOrder;
+}
+
+export async function clearOrders() {
+  await setStoreJSON('menu_orders', 'all', []);
+  return [];
 }

@@ -22,7 +22,10 @@ import {
   createAdminCategory,
   updateAdminCategory,
   deleteAdminCategory,
-  updateAdminSettings
+  updateAdminSettings,
+  getAdminOrders,
+  createAdminOrder,
+  clearAdminOrders
 } from './services/adminService';
 
 export default function App() {
@@ -40,6 +43,7 @@ export default function App() {
   const [adminProducts, setAdminProducts] = useState([]);
   const [adminCategories, setAdminCategories] = useState([]);
   const [adminSettingsData, setAdminSettingsData] = useState({});
+  const [adminOrdersData, setAdminOrdersData] = useState(null);
 
   // Modals
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -68,18 +72,34 @@ export default function App() {
   // Load admin data
   const loadAdminData = useCallback(async () => {
     try {
-      const [prods, cats, sets] = await Promise.all([
+      const [prods, cats, sets, ords] = await Promise.all([
         getAdminProducts(),
         getAdminCategories(),
-        getAdminSettings()
+        getAdminSettings(),
+        getAdminOrders().catch(() => null)
       ]);
       setAdminProducts(prods || []);
       setAdminCategories(cats || []);
       setAdminSettingsData(sets || {});
+      if (ords) setAdminOrdersData(ords);
     } catch (err) {
       console.error('Error loading admin data:', err);
     }
   }, []);
+
+  const loadAdminOrders = useCallback(async () => {
+    try {
+      const ords = await getAdminOrders();
+      if (ords) setAdminOrdersData(ords);
+    } catch (err) {
+      console.error('Error refreshing orders:', err);
+    }
+  }, []);
+
+  const handleCreateManualOrder = async (orderPayload) => {
+    await createAdminOrder(orderPayload);
+    await loadAdminOrders();
+  };
 
   // Initial mount: load menu & check auth
   useEffect(() => {
@@ -214,7 +234,10 @@ export default function App() {
               products={adminProducts}
               categories={adminCategories}
               settings={adminSettingsData}
+              ordersData={adminOrdersData}
               onNavigateTab={setAdminTab}
+              onRefreshOrders={loadAdminOrders}
+              onCreateManualOrder={handleCreateManualOrder}
               onOpenCreateProduct={() => {
                 setEditingProduct(null);
                 setIsProductModalOpen(true);
