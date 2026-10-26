@@ -2,14 +2,23 @@ import { getStore, connectLambda } from '@netlify/blobs';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { fileURLToPath } from 'url';
 import { INITIAL_SETTINGS, INITIAL_CATEGORIES, INITIAL_PRODUCTS } from './seedData.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Determine bundled storage directory safely across CommonJS, ESM and Lambda
+function resolveBundledDir() {
+  const cwdDir = path.resolve(process.cwd(), '.local-blobs');
+  if (fs.existsSync(cwdDir)) return cwdDir;
+  if (typeof __dirname !== 'undefined') {
+    const relDir = path.resolve(__dirname, '../../../.local-blobs');
+    if (fs.existsSync(relDir)) return relDir;
+    const taskDir = path.resolve(__dirname, '.local-blobs');
+    if (fs.existsSync(taskDir)) return taskDir;
+  }
+  return cwdDir;
+}
 
 // Bundled directory (read-only in AWS Lambda / Netlify, writable in local dev)
-const BUNDLED_LOCAL_DIR = path.resolve(__dirname, '../../../.local-blobs');
+const BUNDLED_LOCAL_DIR = resolveBundledDir();
 
 // Detect serverless environment
 const isServerless = Boolean(
