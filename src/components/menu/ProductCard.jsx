@@ -91,11 +91,11 @@ export default function ProductCard({ product, index = 0, currency = 'MXN', onCl
           )}
 
           {isCombine && maxComb > 0 ? (
-            <div className="mt-2 flex items-center gap-1 text-[10px] text-orange-800 font-bold bg-orange-100/80 px-2 py-0.5 rounded-md inline-flex border border-orange-200 shadow-xs">
+            <div className="mt-2 flex items-center gap-1 text-[10px] text-orange-800 font-bold bg-orange-100/80 px-2 py-0.5 rounded-md border border-orange-200 shadow-xs">
               <span>✨ Combina hasta {maxComb} ingredientes</span>
             </div>
           ) : hasIngredients ? (
-            <div className="mt-2 flex items-center gap-1 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md inline-flex border border-emerald-200">
+            <div className="mt-2 flex items-center gap-1 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
               <span>{ingredients.length} ingredientes personalizables</span>
             </div>
           ) : null}
