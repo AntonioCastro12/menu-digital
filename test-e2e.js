@@ -208,8 +208,29 @@ async function runTests() {
   }
   console.log('-> Prueba 10 PASÓ con éxito.');
 
+  // TEST 11: Limpiar Dashboard / Órdenes
+  console.log('\n[11/11] Probando DELETE /.netlify/functions/admin-orders (Limpiar Dashboard)...');
+  const clearRes = await adminOrdersHandler({
+    httpMethod: 'DELETE',
+    headers: { authorization: `Bearer ${authToken}` }
+  }, {});
+  console.log('Status code (esperado 200):', clearRes.statusCode);
+  if (clearRes.statusCode !== 200) throw new Error('Fallo al limpiar ventas');
+
+  const afterClearRes = await adminOrdersHandler({
+    httpMethod: 'GET',
+    headers: { authorization: `Bearer ${authToken}` }
+  }, {});
+  const afterClearData = JSON.parse(afterClearRes.body);
+  console.log('Ventas tras limpiar (esperado 0):', afterClearData.metrics.totalSales);
+  console.log('Pedidos tras limpiar (esperado 0):', afterClearData.metrics.totalOrders);
+  if (afterClearData.metrics.totalSales !== 0 || afterClearData.metrics.totalOrders !== 0) {
+    throw new Error('Las métricas no volvieron a 0');
+  }
+  console.log('-> Prueba 11 PASÓ con éxito.');
+
   console.log('\n==========================================');
-  console.log('¡TODAS LAS 10 PRUEBAS PASARON EXITOSAMENTE!');
+  console.log('¡TODAS LAS 11 PRUEBAS PASARON EXITOSAMENTE!');
   console.log('==========================================\n');
 }
 

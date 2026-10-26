@@ -101,6 +101,11 @@ export default function App() {
     await loadAdminOrders();
   };
 
+  const handleClearOrders = async () => {
+    await clearAdminOrders();
+    await loadAdminOrders();
+  };
+
   // Initial mount: load menu & check auth
   useEffect(() => {
     loadMenu();
@@ -238,6 +243,7 @@ export default function App() {
               onNavigateTab={setAdminTab}
               onRefreshOrders={loadAdminOrders}
               onCreateManualOrder={handleCreateManualOrder}
+              onClearOrders={handleClearOrders}
               onOpenCreateProduct={() => {
                 setEditingProduct(null);
                 setIsProductModalOpen(true);

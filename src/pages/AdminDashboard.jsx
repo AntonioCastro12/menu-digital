@@ -20,9 +20,12 @@ import {
   Sparkles,
   Users,
   Check,
-  X
+  X,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 import Modal from '../components/shared/Modal';
+import ConfirmDialog from '../components/shared/ConfirmDialog';
 
 function AnimatedNumber({ value = 0, isCurrency = false, currency = 'MXN', duration = 900 }) {
   const [displayValue, setDisplayValue] = useState(0);
@@ -68,7 +71,8 @@ export default function AdminDashboard({
   onOpenCreateProduct,
   onOpenCreateCategory,
   onRefreshOrders,
-  onCreateManualOrder
+  onCreateManualOrder,
+  onClearOrders
 }) {
   const [isManualSaleOpen, setIsManualSaleOpen] = useState(false);
   const [manualClient, setManualClient] = useState('');
@@ -80,6 +84,11 @@ export default function AdminDashboard({
   const [isSubmittingSale, setIsSubmittingSale] = useState(false);
   const [saleSuccessToast, setSaleSuccessToast] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Clear dashboard state
+  const [isConfirmClearOpen, setIsConfirmClearOpen] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
+  const [clearSuccessToast, setClearSuccessToast] = useState(false);
 
   // Extract metrics from ordersData
   const metrics = ordersData?.metrics || {
@@ -177,6 +186,21 @@ export default function AdminDashboard({
     }
   };
 
+  const handleConfirmClear = async () => {
+    if (!onClearOrders) return;
+    setIsClearing(true);
+    try {
+      await onClearOrders();
+      setClearSuccessToast(true);
+      setTimeout(() => setClearSuccessToast(false), 3000);
+      setIsConfirmClearOpen(false);
+    } catch (err) {
+      alert(err.message || 'Error al reiniciar el dashboard');
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
   // Calculate highest revenue for top product bar scaling
   const maxTopProductQty = Math.max(1, ...(metrics.topProducts?.map(p => p.quantity) || [1]));
 
@@ -206,7 +230,7 @@ export default function AdminDashboard({
             <button
               type="button"
               onClick={() => setIsManualSaleOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-orange-700 text-xs font-black shadow-md hover:bg-orange-50 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-orange-700 text-xs font-black shadow-md hover:bg-orange-50 active:scale-95 transition-all cursor-pointer"
             >
               <DollarSign className="w-4 h-4 text-emerald-600" />
               <span>Registrar Venta</span>
@@ -215,7 +239,7 @@ export default function AdminDashboard({
             <button
               type="button"
               onClick={onOpenCreateProduct}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-orange-800/60 hover:bg-orange-800 text-white text-xs font-bold border border-white/20 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-orange-800/60 hover:bg-orange-800 text-white text-xs font-bold border border-white/20 active:scale-95 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Platillo</span>
@@ -225,10 +249,20 @@ export default function AdminDashboard({
               type="button"
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 active:scale-95 transition-all"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 active:scale-95 transition-all cursor-pointer"
               title="Actualizar datos"
             >
               <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsConfirmClearOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-black/20 hover:bg-red-700/80 text-white text-xs font-bold border border-white/20 active:scale-95 transition-all cursor-pointer"
+              title="Limpiar ventas y reiniciar métricas a cero"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-orange-200" />
+              <span className="hidden sm:inline">Limpiar</span>
             </button>
           </div>
         </div>
@@ -243,9 +277,20 @@ export default function AdminDashboard({
               Métricas de Ventas & Rendimiento
             </h2>
           </div>
-          <span className="text-[11px] font-semibold text-stone-500">
-            Sincronizado con Netlify Blobs
-          </span>
+          <div className="flex items-center gap-2.5">
+            <span className="text-[11px] font-semibold text-stone-400 hidden sm:inline">
+              Sincronizado con Netlify Blobs
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsConfirmClearOpen(true)}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-stone-500 hover:text-red-600 hover:bg-red-50 border border-stone-200/90 transition-all cursor-pointer"
+              title="Reiniciar métricas y ventas a cero"
+            >
+              <RotateCcw className="w-3 h-3 text-stone-400 hover:text-red-500" />
+              <span>Limpiar métricas</span>
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -731,6 +776,32 @@ export default function AdminDashboard({
             </div>
           </form>
         </Modal>
+      )}
+
+      {/* MODAL DE CONFIRMACIÓN PARA LIMPIAR DASHBOARD */}
+      <ConfirmDialog
+        isOpen={isConfirmClearOpen}
+        onClose={() => setIsConfirmClearOpen(false)}
+        onConfirm={handleConfirmClear}
+        title="¿Limpiar ventas del Dashboard?"
+        message="Esta acción vaciará todas las comandas registradas y pondrá las métricas de ventas y pedidos a $0.00. Es ideal para abrir un nuevo turno de trabajo o iniciar un nuevo día."
+        confirmText="Sí, limpiar todo"
+        cancelText="Cancelar"
+        isDestructive={true}
+        isLoading={isClearing}
+      />
+
+      {/* TOAST DE ÉXITO AL LIMPIAR */}
+      {clearSuccessToast && (
+        <div className="fixed bottom-6 right-6 z-[9999] bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-pop-in border border-stone-800">
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-xs font-black block">Dashboard Limpiado</span>
+            <span className="text-[11px] text-stone-300 block">Las métricas y comandas han vuelto a $0.00.</span>
+          </div>
+        </div>
       )}
     </div>
   );
