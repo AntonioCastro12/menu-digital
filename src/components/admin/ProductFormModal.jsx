@@ -631,7 +631,7 @@ export default function ProductFormModal({
         {/* Photo Upload & Preview */}
         <div>
           <label className="block text-xs font-bold text-stone-700 mb-1">
-            Fotografía del platillo (Netlify Blobs)
+            Fotografía del platillo 
           </label>
 
           <div className="flex flex-col sm:flex-row gap-3 items-center">
@@ -776,7 +776,7 @@ export default function ProductFormModal({
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Guardando en Blobs...</span>
+                <span>Guardando...</span>
               </>
             ) : (
               <>
