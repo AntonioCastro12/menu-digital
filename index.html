@@ -11,8 +11,49 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Anti-Netlify-Badge pre-emptive suppression -->
+    <script>
+      try {
+        localStorage.setItem('nl-hud:public:v1', 'hidden:' + (Date.now() + 315360000000));
+        localStorage.setItem('nl-hud:owner-private:v1', 'hidden');
+      } catch (e) {}
+
+      (function() {
+        function purgeNetlifyFrames() {
+          const els = document.querySelectorAll('iframe[title="Powered by Netlify"], iframe[id*="nl-"], #nl-badge-frame:not(div)');
+          els.forEach(el => el.remove());
+        }
+        if (typeof MutationObserver !== 'undefined') {
+          new MutationObserver(purgeNetlifyFrames).observe(document.documentElement, { childList: true, subtree: true });
+        }
+        window.addEventListener('load', purgeNetlifyFrames);
+      })();
+    </script>
+    <style>
+      #nl-badge-frame,
+      #nl-hud-frame,
+      iframe[title="Powered by Netlify"],
+      iframe[id^="nl-"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        clip-path: path("M0 0Z") !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: fixed !important;
+        bottom: -9999px !important;
+        right: -9999px !important;
+        z-index: -999999 !important;
+      }
+    </style>
   </head>
   <body class="bg-stone-50 text-stone-900 antialiased selection:bg-orange-500 selection:text-white min-h-screen">
+    <!-- Decoy element to trigger Netlify HUD script early exit -->
+    <div id="nl-badge-frame" style="display:none!important;width:0!important;height:0!important;position:fixed!important;bottom:-9999px!important;right:-9999px!important;opacity:0!important;pointer-events:none!important;" aria-hidden="true"></div>
+    <div id="nl-hud-frame" style="display:none!important;width:0!important;height:0!important;position:fixed!important;bottom:-9999px!important;right:-9999px!important;opacity:0!important;pointer-events:none!important;" aria-hidden="true"></div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

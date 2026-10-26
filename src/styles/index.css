@@ -17,3 +17,22 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide Netlify Badge / HUD / Powered by Netlify frame */
+#nl-badge-frame,
+#nl-hud-frame,
+iframe[title="Powered by Netlify"],
+iframe[id^="nl-"],
+iframe[srcdoc*="nl-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  clip-path: path("M0 0Z") !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: fixed !important;
+  bottom: -9999px !important;
+  right: -9999px !important;
+  z-index: -999999 !important;
+}
