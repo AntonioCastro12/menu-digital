@@ -17,31 +17,31 @@ import {
 } from 'lucide-react';
 
 const COMMON_BASE_INGREDIENTS = [
-  'Cilantro',
-  'Cebolla picada',
-  'Piña asada',
-  'Salsa taquera',
-  'Queso fundido',
-  'Aguacate fresco',
-  'Crema ácida',
-  'Frijoles refritos',
-  'Orégano',
-  'Limón'
+  // 'Cilantro',
+  // 'Cebolla picada',
+  // 'Piña asada',
+  // 'Salsa taquera',
+  // 'Queso fundido',
+  // 'Aguacate fresco',
+  // 'Crema ácida',
+  // 'Frijoles refritos',
+  // 'Orégano',
+  // 'Limón'
 ];
 
 const COMMON_COMBINATION_OPTIONS = [
-  'Carne al Pastor',
-  'Bistec asado',
-  'Longaniza doradita',
-  'Suadero tradicional',
-  'Arrachera',
-  'Peperoni',
-  'Jamón de pierna',
-  'Champiñones frescos',
-  'Piña asada',
-  'Tocino ahumado',
-  'Queso de cabra',
-  'Pimiento morrón'
+  // 'Carne al Pastor',
+  // 'Bistec asado',
+  // 'Longaniza doradita',
+  // 'Suadero tradicional',
+  // 'Arrachera',
+  // 'Peperoni',
+  // 'Jamón de pierna',
+  // 'Champiñones frescos',
+  // 'Piña asada',
+  // 'Tocino ahumado',
+  // 'Queso de cabra',
+  // 'Pimiento morrón'
 ];
 
 export default function ProductFormModal({
