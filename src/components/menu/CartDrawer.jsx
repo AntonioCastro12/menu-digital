@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   Trash2,
@@ -129,8 +130,8 @@ export default function CartDrawer({
     window.open(waUrl, '_blank');
   };
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] overflow-hidden">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity"
@@ -421,6 +422,7 @@ export default function CartDrawer({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
