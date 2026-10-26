@@ -1,32 +1,68 @@
-import { getStore } from '@netlify/blobs';
+import { getStore, connectLambda } from '@netlify/blobs';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { fileURLToPath } from 'url';
 import { INITIAL_SETTINGS, INITIAL_CATEGORIES, INITIAL_PRODUCTS } from './seedData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const LOCAL_BLOB_DIR = path.resolve(__dirname, '../../../.local-blobs');
 
-// Ensure local fallback directory exists
-function ensureLocalDir(subDir = '') {
-  const targetDir = path.join(LOCAL_BLOB_DIR, subDir);
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-  return targetDir;
-}
+// Bundled directory (read-only in AWS Lambda / Netlify, writable in local dev)
+const BUNDLED_LOCAL_DIR = path.resolve(__dirname, '../../../.local-blobs');
 
-// Check if we are running in a real Netlify Blobs environment
-function canUseNetlifyBlobs() {
-  return Boolean(process.env.NETLIFY_BLOBS_CONTEXT || process.env.NETLIFY);
-}
+// Detect serverless environment
+const isServerless = Boolean(
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.LAMBDA_TASK_ROOT ||
+  process.env.NETLIFY
+);
 
-// Generic get JSON helper with Netlify Blobs and local fallback
-export async function getStoreJSON(storeName, key, defaultValue = null) {
-  if (canUseNetlifyBlobs()) {
+// In AWS Lambda, only /tmp is writable. In dev, project .local-blobs is writable.
+const WRITABLE_LOCAL_DIR = isServerless
+  ? path.join(os.tmpdir(), 'menu-local-blobs')
+  : BUNDLED_LOCAL_DIR;
+
+// Helper to initialize Netlify Blobs context in Lambda compatibility mode
+export function initBlobs(event) {
+  if (event && event.blobs) {
     try {
-      const store = getStore({ name: storeName, consistency: 'strong' });
+      connectLambda(event);
+    } catch (err) {
+      console.warn('[Blobs] connectLambda warning:', err.message);
+    }
+  }
+}
+
+// Safely obtain a Blobs store reference without throwing if Blobs is unconfigured
+export function getStoreSafe(storeName) {
+  try {
+    return getStore({ name: storeName, consistency: 'strong' });
+  } catch (err) {
+    return null;
+  }
+}
+
+// Ensure writable fallback directory exists
+function ensureWritableDir(subDir = '') {
+  try {
+    const targetDir = path.join(WRITABLE_LOCAL_DIR, subDir);
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    return targetDir;
+  } catch (err) {
+    console.warn(`[Storage] Could not create fallback directory for ${subDir}:`, err.message);
+    return null;
+  }
+}
+
+// Generic get JSON helper with Netlify Blobs and safe local fallbacks
+export async function getStoreJSON(storeName, key, defaultValue = null) {
+  // 1. Try Netlify Blobs
+  const store = getStoreSafe(storeName);
+  if (store) {
+    try {
       const val = await store.get(key, { type: 'json' });
       if (val !== null && val !== undefined) return val;
     } catch (err) {
@@ -34,27 +70,39 @@ export async function getStoreJSON(storeName, key, defaultValue = null) {
     }
   }
 
-  // Local filesystem fallback
+  // 2. Try Writable fallback directory (/tmp or local)
   try {
-    const dir = ensureLocalDir(storeName);
-    const filePath = path.join(dir, `${key}.json`);
-    if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath, 'utf8');
+    const writableFile = path.join(WRITABLE_LOCAL_DIR, storeName, `${key}.json`);
+    if (fs.existsSync(writableFile)) {
+      const raw = fs.readFileSync(writableFile, 'utf8');
       return JSON.parse(raw);
     }
   } catch (err) {
-    console.error(`[LocalBlobs] Read error for ${storeName}/${key}:`, err);
+    console.warn(`[LocalBlobs] Writable dir read error for ${storeName}/${key}:`, err.message);
+  }
+
+  // 3. Try Bundled repository directory (.local-blobs)
+  try {
+    const bundledFile = path.join(BUNDLED_LOCAL_DIR, storeName, `${key}.json`);
+    if (fs.existsSync(bundledFile)) {
+      const raw = fs.readFileSync(bundledFile, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch (err) {
+    console.warn(`[LocalBlobs] Bundled dir read error for ${storeName}/${key}:`, err.message);
   }
 
   return defaultValue;
 }
 
-// Generic set JSON helper with Netlify Blobs and local fallback
+// Generic set JSON helper with Netlify Blobs and safe local fallback
 export async function setStoreJSON(storeName, key, value) {
   let savedToBlobs = false;
-  if (canUseNetlifyBlobs()) {
+
+  // 1. Try Netlify Blobs
+  const store = getStoreSafe(storeName);
+  if (store) {
     try {
-      const store = getStore({ name: storeName, consistency: 'strong' });
       await store.setJSON(key, value);
       savedToBlobs = true;
     } catch (err) {
@@ -62,14 +110,15 @@ export async function setStoreJSON(storeName, key, value) {
     }
   }
 
-  // Always keep local filesystem in sync when running locally or as backup
+  // 2. Sync to writable local storage (safe, never crashes on EROFS)
   try {
-    const dir = ensureLocalDir(storeName);
-    const filePath = path.join(dir, `${key}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(value, null, 2), 'utf8');
+    const dir = ensureWritableDir(storeName);
+    if (dir) {
+      const filePath = path.join(dir, `${key}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(value, null, 2), 'utf8');
+    }
   } catch (err) {
-    console.error(`[LocalBlobs] Write error for ${storeName}/${key}:`, err);
-    if (!savedToBlobs) throw err;
+    console.warn(`[LocalBlobs] Write warning for ${storeName}/${key}:`, err.message);
   }
 
   return true;
@@ -77,9 +126,10 @@ export async function setStoreJSON(storeName, key, value) {
 
 // Binary image retrieval
 export async function getImageBlob(imageId) {
-  if (canUseNetlifyBlobs()) {
+  // 1. Try Netlify Blobs
+  const store = getStoreSafe('menu_images');
+  if (store) {
     try {
-      const store = getStore({ name: 'menu_images', consistency: 'strong' });
       const result = await store.getWithMetadata(imageId, { type: 'arrayBuffer' });
       if (result && result.data) {
         return {
@@ -93,12 +143,10 @@ export async function getImageBlob(imageId) {
     }
   }
 
-  // Local fallback
+  // 2. Check Writable dir (/tmp or local)
   try {
-    const dir = ensureLocalDir('menu_images');
-    const binPath = path.join(dir, `${imageId}.bin`);
-    const metaPath = path.join(dir, `${imageId}.meta.json`);
-
+    const binPath = path.join(WRITABLE_LOCAL_DIR, 'menu_images', `${imageId}.bin`);
+    const metaPath = path.join(WRITABLE_LOCAL_DIR, 'menu_images', `${imageId}.meta.json`);
     if (fs.existsSync(binPath)) {
       const buffer = fs.readFileSync(binPath);
       let metadata = { contentType: 'image/jpeg', size: buffer.length };
@@ -112,7 +160,27 @@ export async function getImageBlob(imageId) {
       };
     }
   } catch (err) {
-    console.error(`[LocalBlobs] Image read error for ${imageId}:`, err);
+    console.warn(`[LocalBlobs] Image read error in writable dir for ${imageId}:`, err.message);
+  }
+
+  // 3. Check Bundled repository dir (.local-blobs)
+  try {
+    const binPath = path.join(BUNDLED_LOCAL_DIR, 'menu_images', `${imageId}.bin`);
+    const metaPath = path.join(BUNDLED_LOCAL_DIR, 'menu_images', `${imageId}.meta.json`);
+    if (fs.existsSync(binPath)) {
+      const buffer = fs.readFileSync(binPath);
+      let metadata = { contentType: 'image/jpeg', size: buffer.length };
+      if (fs.existsSync(metaPath)) {
+        metadata = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+      }
+      return {
+        buffer,
+        contentType: metadata.contentType || 'image/jpeg',
+        size: buffer.length
+      };
+    }
+  } catch (err) {
+    console.warn(`[LocalBlobs] Image read error in bundled dir for ${imageId}:`, err.message);
   }
 
   return null;
@@ -120,7 +188,6 @@ export async function getImageBlob(imageId) {
 
 // Binary image saving
 export async function saveImageBlob(imageId, buffer, metadata = {}) {
-  let savedToBlobs = false;
   const safeMeta = {
     contentType: metadata.contentType || 'image/jpeg',
     fileName: metadata.fileName || `${imageId}.jpg`,
@@ -128,26 +195,27 @@ export async function saveImageBlob(imageId, buffer, metadata = {}) {
     uploadedAt: new Date().toISOString()
   };
 
-  if (canUseNetlifyBlobs()) {
+  // 1. Try Netlify Blobs
+  const store = getStoreSafe('menu_images');
+  if (store) {
     try {
-      const store = getStore({ name: 'menu_images', consistency: 'strong' });
       await store.set(imageId, buffer, { metadata: safeMeta });
-      savedToBlobs = true;
     } catch (err) {
       console.warn(`[Blobs] Image write failed for ${imageId}:`, err.message);
     }
   }
 
-  // Local fallback
+  // 2. Safe local writable fallback
   try {
-    const dir = ensureLocalDir('menu_images');
-    const binPath = path.join(dir, `${imageId}.bin`);
-    const metaPath = path.join(dir, `${imageId}.meta.json`);
-    fs.writeFileSync(binPath, buffer);
-    fs.writeFileSync(metaPath, JSON.stringify(safeMeta, null, 2), 'utf8');
+    const dir = ensureWritableDir('menu_images');
+    if (dir) {
+      const binPath = path.join(dir, `${imageId}.bin`);
+      const metaPath = path.join(dir, `${imageId}.meta.json`);
+      fs.writeFileSync(binPath, buffer);
+      fs.writeFileSync(metaPath, JSON.stringify(safeMeta, null, 2), 'utf8');
+    }
   } catch (err) {
-    console.error(`[LocalBlobs] Image write error for ${imageId}:`, err);
-    if (!savedToBlobs) throw err;
+    console.warn(`[LocalBlobs] Image write warning for ${imageId}:`, err.message);
   }
 
   return safeMeta;
@@ -155,23 +223,27 @@ export async function saveImageBlob(imageId, buffer, metadata = {}) {
 
 // Binary image deletion
 export async function deleteImageBlob(imageId) {
-  if (canUseNetlifyBlobs()) {
+  // 1. Try Netlify Blobs
+  const store = getStoreSafe('menu_images');
+  if (store) {
     try {
-      const store = getStore({ name: 'menu_images', consistency: 'strong' });
       await store.delete(imageId);
     } catch (err) {
       console.warn(`[Blobs] Image delete failed for ${imageId}:`, err.message);
     }
   }
 
+  // 2. Local fallback deletion
   try {
-    const dir = ensureLocalDir('menu_images');
-    const binPath = path.join(dir, `${imageId}.bin`);
-    const metaPath = path.join(dir, `${imageId}.meta.json`);
-    if (fs.existsSync(binPath)) fs.unlinkSync(binPath);
-    if (fs.existsSync(metaPath)) fs.unlinkSync(metaPath);
+    const dir = ensureWritableDir('menu_images');
+    if (dir) {
+      const binPath = path.join(dir, `${imageId}.bin`);
+      const metaPath = path.join(dir, `${imageId}.meta.json`);
+      if (fs.existsSync(binPath)) fs.unlinkSync(binPath);
+      if (fs.existsSync(metaPath)) fs.unlinkSync(metaPath);
+    }
   } catch (err) {
-    console.error(`[LocalBlobs] Image delete error for ${imageId}:`, err);
+    console.warn(`[LocalBlobs] Image delete warning for ${imageId}:`, err.message);
   }
 
   return true;
@@ -183,7 +255,6 @@ export async function deleteImageBlob(imageId) {
 export async function getRestaurantSettings() {
   const current = await getStoreJSON('restaurant_settings', 'config', null);
   if (!current) {
-    // Seed initial settings
     await setStoreJSON('restaurant_settings', 'config', INITIAL_SETTINGS);
     return INITIAL_SETTINGS;
   }
@@ -205,7 +276,6 @@ export async function updateRestaurantSettings(newSettings) {
 export async function getCategories() {
   const current = await getStoreJSON('menu_categories', 'all', null);
   if (!current || !Array.isArray(current)) {
-    // Seed initial categories
     await setStoreJSON('menu_categories', 'all', INITIAL_CATEGORIES);
     return INITIAL_CATEGORIES;
   }
@@ -221,11 +291,9 @@ export async function saveCategories(categoriesList) {
 export async function getProducts() {
   const current = await getStoreJSON('menu_products', 'all', null);
   if (!current || !Array.isArray(current)) {
-    // Seed initial products
     await setStoreJSON('menu_products', 'all', INITIAL_PRODUCTS);
     return INITIAL_PRODUCTS;
   }
-  // Ensure backward compatibility if stored without new fields
   return current.map(p => {
     const initialMatch = INITIAL_PRODUCTS.find(ip => ip.id === p.id);
     return {

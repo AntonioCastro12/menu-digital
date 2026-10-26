@@ -1,4 +1,4 @@
-import { getImageBlob } from './utils/blobStore.js';
+import { getImageBlob, initBlobs } from './utils/blobStore.js';
 
 // SVG placeholder returned when image is missing or invalid
 const PLACEHOLDER_SVG = Buffer.from(`
@@ -13,6 +13,8 @@ const PLACEHOLDER_SVG = Buffer.from(`
 `).toString('base64');
 
 export async function handler(event, context) {
+  initBlobs(event);
+
   if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
     return {
       statusCode: 405,

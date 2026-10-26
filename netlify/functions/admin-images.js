@@ -4,7 +4,8 @@ import {
   saveImageBlob,
   deleteImageBlob,
   getProducts,
-  getRestaurantSettings
+  getRestaurantSettings,
+  initBlobs
 } from './utils/blobStore.js';
 
 // Allowed MIME types and magic bytes check
@@ -48,6 +49,8 @@ function validateImageMagicBytes(buffer) {
 }
 
 export async function handler(event, context) {
+  initBlobs(event);
+
   const auth = requireAdmin(event);
   if (!auth.authorized) {
     return auth.response;

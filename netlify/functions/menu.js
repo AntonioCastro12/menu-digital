@@ -1,6 +1,8 @@
-import { getRestaurantSettings, getCategories, getProducts } from './utils/blobStore.js';
+import { getRestaurantSettings, getCategories, getProducts, initBlobs } from './utils/blobStore.js';
 
 export async function handler(event, context) {
+  initBlobs(event);
+
   // Only allow GET or HEAD
   if (event.httpMethod !== 'GET' && event.httpMethod !== 'HEAD') {
     return {

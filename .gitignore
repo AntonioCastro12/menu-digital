@@ -23,9 +23,6 @@ dist-ssr/
 .env.test.local
 .env.production.local
 
-# Local Blobs Fallback store (ignored so local test files don't pollute git)
-.local-blobs/
-
 # Netlify local cache
 .netlify/
 

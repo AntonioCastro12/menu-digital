@@ -1,0 +1,23 @@
+{
+  "name": "Patitas de Puerco Doña Imelda",
+  "tagline": "El autentico sabor casero.",
+  "description": "Patitas de puerco echas totalmente en casa",
+  "address": "Calle Rey Alfonso Xlll, No. 367 Fracc Los Reyes",
+  "phone": "4621472372",
+  "whatsapp": "524621472372",
+  "whatsappMessage": "¡Hola! Quisiera hacer un pedido o consultar disponibilidad desde su Menú Digital.",
+  "hours": "Lun- Dom: 14:00 a 19:00 hrs",
+  "currency": "MXN",
+  "currencySymbol": "$",
+  "isOpen": true,
+  "closedMessage": "Nuestro horario de servicio ha terminado por hoy. Te esperamos mañana a partir de la 1:00 PM.",
+  "logoUrl": "/.netlify/functions/menu-image?id=img_1793036317611_2434fbcd8e21",
+  "bannerUrl": "/.netlify/functions/menu-image?id=img_1793036314607_c14d46a9606f",
+  "showContactInfo": true,
+  "themeColor": "#cd6f3c",
+  "socialInstagram": "@elasadortacos",
+  "socialFacebook": "ElAsadorTacosMX",
+  "updatedAt": "2026-10-26T17:48:07.406Z",
+  "logoId": "img_1793036317611_2434fbcd8e21",
+  "bannerId": "img_1793036314607_c14d46a9606f"
+}

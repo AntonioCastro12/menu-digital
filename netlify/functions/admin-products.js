@@ -1,7 +1,9 @@
 import { requireAdmin } from './utils/auth.js';
-import { getProducts, saveProducts, getCategories, deleteImageBlob } from './utils/blobStore.js';
+import { getProducts, saveProducts, getCategories, deleteImageBlob, initBlobs } from './utils/blobStore.js';
 
 export async function handler(event, context) {
+  initBlobs(event);
+
   const auth = requireAdmin(event);
   if (!auth.authorized) {
     return auth.response;

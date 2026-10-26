@@ -1,7 +1,9 @@
 import { requireAdmin } from './utils/auth.js';
-import { getRestaurantSettings, updateRestaurantSettings } from './utils/blobStore.js';
+import { getRestaurantSettings, updateRestaurantSettings, initBlobs } from './utils/blobStore.js';
 
 export async function handler(event, context) {
+  initBlobs(event);
+
   // Security check: Must be authenticated admin
   const auth = requireAdmin(event);
   if (!auth.authorized) {
