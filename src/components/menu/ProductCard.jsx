@@ -3,7 +3,7 @@ import { formatCurrency } from '../../utils/formatters';
 import Badge from '../shared/Badge';
 import { Utensils, Plus } from 'lucide-react';
 
-export default function ProductCard({ product, currency = 'MXN', onClick }) {
+export default function ProductCard({ product, index = 0, currency = 'MXN', onClick }) {
   const [imageError, setImageError] = useState(false);
 
   const {
@@ -33,7 +33,8 @@ export default function ProductCard({ product, currency = 'MXN', onClick }) {
   return (
     <div
       onClick={() => onClick(product)}
-      className={`group relative bg-white rounded-3xl border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between transform hover:-translate-y-1.5 ${
+      style={{ animationDelay: `${Math.min(index * 50, 500)}ms` }}
+      className={`group relative bg-white rounded-3xl border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between transform hover:-translate-y-1.5 animate-fade-in-up ${
         !available ? 'opacity-75 bg-stone-50/80' : ''
       }`}
     >

@@ -32,17 +32,17 @@ export default function CategoryNav({
           type="button"
           data-active={activeCategory === 'all'}
           onClick={() => onSelectCategory('all')}
-          className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-black transition-all duration-300 transform active:scale-95 ${
             activeCategory === 'all'
-              ? 'bg-orange-600 text-white shadow-sm ring-2 ring-orange-600/30'
-              : 'bg-stone-100 text-stone-700 hover:bg-stone-200 hover:text-stone-900'
+              ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md scale-105 ring-2 ring-orange-500/30'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:scale-102'
           }`}
         >
           Todo el Menú
           {categoryCounts['all'] !== undefined && (
             <span
-              className={`ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] ${
-                activeCategory === 'all' ? 'bg-orange-700 text-white' : 'bg-stone-200 text-stone-600'
+              className={`ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-black transition-colors ${
+                activeCategory === 'all' ? 'bg-orange-800/80 text-white' : 'bg-stone-200 text-stone-600'
               }`}
             >
               {categoryCounts['all']}
@@ -61,17 +61,17 @@ export default function CategoryNav({
               type="button"
               data-active={isActive}
               onClick={() => onSelectCategory(cat.id)}
-              className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-black transition-all duration-300 whitespace-nowrap transform active:scale-95 ${
                 isActive
-                  ? 'bg-orange-600 text-white shadow-sm ring-2 ring-orange-600/30'
-                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200 hover:text-stone-900'
+                  ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md scale-105 ring-2 ring-orange-500/30'
+                  : 'bg-stone-100 text-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:scale-102'
               }`}
             >
               {cat.name}
               {count > 0 && (
                 <span
-                  className={`ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] ${
-                    isActive ? 'bg-orange-700 text-white' : 'bg-stone-200 text-stone-600'
+                  className={`ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-black transition-colors ${
+                    isActive ? 'bg-orange-800/80 text-white' : 'bg-stone-200 text-stone-600'
                   }`}
                 >
                   {count}

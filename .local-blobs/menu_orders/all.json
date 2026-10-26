@@ -1,5 +1,35 @@
 [
   {
+    "id": "ord_1793046349110_ud2y",
+    "customerName": "Cliente Prueba E2E",
+    "orderType": "dineIn",
+    "tableNumber": "9",
+    "deliveryAddress": "",
+    "notes": "",
+    "items": [
+      {
+        "name": "Orden Entera de patitas de puerco",
+        "price": 110,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": [],
+        "notes": ""
+      },
+      {
+        "name": "Media Orden de Patita de Puerco",
+        "price": 70,
+        "quantity": 1,
+        "selectedCombinations": [],
+        "excludedIngredients": [],
+        "notes": ""
+      }
+    ],
+    "totalAmount": 180,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T20:25:49.110Z"
+  },
+  {
     "id": "ord_1793044777448_k76l",
     "customerName": "Cliente Prueba E2E",
     "orderType": "dineIn",

@@ -62,9 +62,12 @@ export default function MenuHeader({ settings, cartCount = 0, onOpenCart }) {
           )}
 
           {isOpen ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/90 text-white backdrop-blur-md shadow-md border border-emerald-400/40">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              Abierto
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/90 text-white backdrop-blur-md shadow-md border border-emerald-400/40">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+              </span>
+              <span>Abierto hoy</span>
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-600/90 text-white backdrop-blur-md shadow-md border border-rose-400/40">
@@ -79,17 +82,17 @@ export default function MenuHeader({ settings, cartCount = 0, onOpenCart }) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-5">
         <div className="relative -mt-14 sm:-mt-16 flex flex-col sm:flex-row items-center sm:items-end gap-4 text-center sm:text-left">
           {/* Logo */}
-          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1 shadow-xl border-2 border-stone-100 flex-shrink-0 overflow-hidden relative z-10">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white p-1.5 shadow-xl border-2 border-stone-100 flex-shrink-0 overflow-hidden relative z-10 transform hover:scale-105 hover:-rotate-1 transition-all duration-300">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt={`Logo ${name}`}
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full h-full object-cover rounded-2xl"
                 onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
             ) : (
               <div
-                className="w-full h-full rounded-xl flex items-center justify-center text-white font-extrabold text-2xl shadow-inner"
+                className="w-full h-full rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shadow-inner"
                 style={{ backgroundColor: themeColor }}
               >
                 {name.slice(0, 2).toUpperCase()}
@@ -99,7 +102,7 @@ export default function MenuHeader({ settings, cartCount = 0, onOpenCart }) {
 
           {/* Restaurant Titles */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
               {name}
             </h1>
             {tagline && (
@@ -115,9 +118,9 @@ export default function MenuHeader({ settings, cartCount = 0, onOpenCart }) {
               <button
                 type="button"
                 onClick={onOpenCart}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 shadow-md hover:shadow-lg transition-all active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 shadow-md hover:shadow-orange-600/30 transition-all transform hover:scale-105 active:scale-95"
               >
-                <ShoppingBag className="w-4 h-4" />
+                <ShoppingBag className="w-4 h-4 animate-bounce-subtle" />
                 <span>Ver Pedido ({cartCount})</span>
               </button>
             )}
@@ -127,9 +130,9 @@ export default function MenuHeader({ settings, cartCount = 0, onOpenCart }) {
                 href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:shadow-lg transition-all active:scale-95 bg-emerald-600 hover:bg-emerald-700"
+                className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-black text-white shadow-md hover:shadow-emerald-600/30 transition-all transform hover:scale-105 active:scale-95 bg-emerald-600 hover:bg-emerald-700"
               >
-                <MessageCircle className="w-4 h-4 fill-white" />
+                <MessageCircle className="w-4 h-4 fill-white group-hover:rotate-12 transition-transform duration-200" />
                 <span>WhatsApp</span>
               </a>
             )}

@@ -24,6 +24,41 @@ import {
 } from 'lucide-react';
 import Modal from '../components/shared/Modal';
 
+function AnimatedNumber({ value = 0, isCurrency = false, currency = 'MXN', duration = 900 }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    const startVal = displayValue;
+    const targetVal = Number(value) || 0;
+    if (startVal === targetVal) return;
+
+    let animId;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      // ease-out cubic
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const current = startVal + (targetVal - startVal) * easeProgress;
+      setDisplayValue(current);
+
+      if (progress < 1) {
+        animId = requestAnimationFrame(step);
+      } else {
+        setDisplayValue(targetVal);
+      }
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [value, duration]);
+
+  if (isCurrency) {
+    return <span className="tabular-nums transition-all">{formatCurrency(displayValue, currency)}</span>;
+  }
+  return <span className="tabular-nums transition-all">{Math.round(displayValue)}</span>;
+}
+
 export default function AdminDashboard({
   products = [],
   categories = [],
@@ -215,7 +250,7 @@ export default function AdminDashboard({
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* 1. Total Vendido */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                 Ventas Totales
@@ -226,16 +261,16 @@ export default function AdminDashboard({
             </div>
             <div>
               <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight block">
-                {formatCurrency(metrics.totalSales, currency)}
+                <AnimatedNumber value={metrics.totalSales} isCurrency={true} currency={currency} />
               </span>
               <span className="text-[11px] font-bold text-emerald-600 mt-1 inline-flex items-center gap-1">
-                <span>✓ {metrics.totalOrders} pedidos acumulados</span>
+                <span>✓ <AnimatedNumber value={metrics.totalOrders} /> pedidos acumulados</span>
               </span>
             </div>
           </div>
 
           {/* 2. Total de Pedidos */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                 Pedidos Totales
@@ -246,7 +281,7 @@ export default function AdminDashboard({
             </div>
             <div>
               <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight block">
-                {metrics.totalOrders}
+                <AnimatedNumber value={metrics.totalOrders} />
               </span>
               <span className="text-[11px] font-semibold text-stone-500 mt-1 block">
                 Comandas registradas
@@ -255,7 +290,7 @@ export default function AdminDashboard({
           </div>
 
           {/* 3. Ticket Promedio */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                 Ticket Promedio
@@ -266,7 +301,7 @@ export default function AdminDashboard({
             </div>
             <div>
               <span className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight block">
-                {formatCurrency(metrics.averageTicket, currency)}
+                <AnimatedNumber value={metrics.averageTicket} isCurrency={true} currency={currency} />
               </span>
               <span className="text-[11px] font-semibold text-stone-500 mt-1 block">
                 Gasto promedio por cliente
@@ -275,7 +310,7 @@ export default function AdminDashboard({
           </div>
 
           {/* 4. Ventas de Hoy */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-orange-200 bg-orange-50/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-orange-200 bg-orange-50/30 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-orange-900 uppercase tracking-wider">
                 Ventas de Hoy
@@ -286,10 +321,10 @@ export default function AdminDashboard({
             </div>
             <div>
               <span className="text-2xl sm:text-3xl font-black text-orange-950 tracking-tight block">
-                {formatCurrency(metrics.todaySales, currency)}
+                <AnimatedNumber value={metrics.todaySales} isCurrency={true} currency={currency} />
               </span>
               <span className="text-[11px] font-bold text-orange-700 mt-1 inline-flex items-center gap-1">
-                <span>🔥 {metrics.todayOrdersCount} pedidos el día de hoy</span>
+                <span>🔥 <AnimatedNumber value={metrics.todayOrdersCount} /> pedidos el día de hoy</span>
               </span>
             </div>
           </div>
@@ -368,44 +403,44 @@ export default function AdminDashboard({
 
             <div className="grid grid-cols-3 gap-2.5">
               {/* Dine In */}
-              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1">
+              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1 hover:bg-orange-50/40 hover:border-orange-200 transition-all duration-200">
                 <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-700 mx-auto flex items-center justify-center">
                   <UtensilsCrossed className="w-4 h-4" />
                 </div>
                 <span className="text-[11px] font-bold text-stone-500 block">En Mesa</span>
                 <span className="text-base font-black text-stone-900 block">
-                  {formatCurrency(metrics.salesByMethod?.dineIn?.total || 0, currency)}
+                  <AnimatedNumber value={metrics.salesByMethod?.dineIn?.total || 0} isCurrency={true} currency={currency} />
                 </span>
                 <span className="text-[10px] text-stone-400 block font-semibold">
-                  {metrics.salesByMethod?.dineIn?.count || 0} pedidos
+                  <AnimatedNumber value={metrics.salesByMethod?.dineIn?.count || 0} /> pedidos
                 </span>
               </div>
 
               {/* Takeout */}
-              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1">
+              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1 hover:bg-blue-50/40 hover:border-blue-200 transition-all duration-200">
                 <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 mx-auto flex items-center justify-center">
                   <Store className="w-4 h-4" />
                 </div>
                 <span className="text-[11px] font-bold text-stone-500 block">Para Llevar</span>
                 <span className="text-base font-black text-stone-900 block">
-                  {formatCurrency(metrics.salesByMethod?.takeout?.total || 0, currency)}
+                  <AnimatedNumber value={metrics.salesByMethod?.takeout?.total || 0} isCurrency={true} currency={currency} />
                 </span>
                 <span className="text-[10px] text-stone-400 block font-semibold">
-                  {metrics.salesByMethod?.takeout?.count || 0} pedidos
+                  <AnimatedNumber value={metrics.salesByMethod?.takeout?.count || 0} /> pedidos
                 </span>
               </div>
 
               {/* Delivery */}
-              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1">
+              <div className="p-3 rounded-2xl bg-stone-50 border border-stone-200/80 text-center space-y-1 hover:bg-emerald-50/40 hover:border-emerald-200 transition-all duration-200">
                 <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <span className="text-[11px] font-bold text-stone-500 block">A Domicilio</span>
                 <span className="text-base font-black text-stone-900 block">
-                  {formatCurrency(metrics.salesByMethod?.delivery?.total || 0, currency)}
+                  <AnimatedNumber value={metrics.salesByMethod?.delivery?.total || 0} isCurrency={true} currency={currency} />
                 </span>
                 <span className="text-[10px] text-stone-400 block font-semibold">
-                  {metrics.salesByMethod?.delivery?.count || 0} pedidos
+                  <AnimatedNumber value={metrics.salesByMethod?.delivery?.count || 0} /> pedidos
                 </span>
               </div>
             </div>

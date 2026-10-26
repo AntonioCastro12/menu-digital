@@ -379,17 +379,18 @@ export default function ProductDetailModal({
               <button
                 type="button"
                 onClick={handleAdd}
-                className={`flex-1 py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-white shadow-md transition active:scale-95 flex items-center justify-center gap-2 ${
+                className={`flex-1 py-3.5 px-4 rounded-xl font-black text-xs sm:text-sm text-white shadow-md transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 transform ${
                   addedToast
-                    ? 'bg-emerald-600'
-                    : 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/30'
+                    ? 'bg-emerald-600 scale-102 ring-4 ring-emerald-500/30 shadow-emerald-600/40'
+                    : 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 shadow-orange-600/30 hover:scale-101'
                 }`}
               >
                 {addedToast ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>¡Agregado al carrito!</span>
-                  </>
+                  <div className="flex items-center gap-2 animate-pop-in">
+                    <Check className="w-5 h-5 text-white animate-bounce" />
+                    <span>¡Agregado al Carrito!</span>
+                    <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '3s' }} />
+                  </div>
                 ) : (
                   <>
                     <ShoppingBag className="w-4 h-4" />
@@ -403,9 +404,9 @@ export default function ProductDetailModal({
                   href={directWaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition active:scale-95 flex items-center justify-center gap-2"
+                  className="group py-3.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all transform hover:scale-102 active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <MessageCircle className="w-4 h-4 text-emerald-600" />
+                  <MessageCircle className="w-4 h-4 text-emerald-600 group-hover:rotate-12 transition-transform duration-200" />
                   <span>Pedir directo</span>
                 </a>
               )}

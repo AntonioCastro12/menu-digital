@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Utensils, Sparkles, ChefHat, ArrowDown, ChevronRight } from 'lucide-react';
+import { Utensils, Sparkles, ChefHat, ChevronRight } from 'lucide-react';
 
 export default function MenuIntroSplash({ settings = {}, onFinish }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -13,12 +13,12 @@ export default function MenuIntroSplash({ settings = {}, onFinish }) {
     // Progress bar animation
     const p1 = setTimeout(() => setProgress(55), 300);
     const p2 = setTimeout(() => setProgress(88), 700);
-    const p3 = setTimeout(() => setProgress(100), 1100);
+    const p3 = setTimeout(() => setProgress(100), 1200);
 
-    // Auto-dismiss after 1.5s
+    // Auto-dismiss after 1.6s
     const closeTimer = setTimeout(() => {
       handleClose();
-    }, 1500);
+    }, 1600);
 
     return () => {
       clearTimeout(p1);
@@ -48,8 +48,22 @@ export default function MenuIntroSplash({ settings = {}, onFinish }) {
       }`}
     >
       {/* Background ambient glowing orbs */}
-      <div className="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-orange-600/20 blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-orange-600/20 blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-amber-600/20 blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: '700ms' }} />
+
+      {/* Floating culinary decorative particles */}
+      <div className="absolute top-16 left-8 text-2xl opacity-20 pointer-events-none animate-bounce-subtle">
+        🍽️
+      </div>
+      <div className="absolute top-28 right-10 text-xl opacity-20 pointer-events-none animate-bounce-subtle" style={{ animationDelay: '400ms' }}>
+        🥑
+      </div>
+      <div className="absolute bottom-28 left-12 text-xl opacity-20 pointer-events-none animate-bounce-subtle" style={{ animationDelay: '800ms' }}>
+        🔥
+      </div>
+      <div className="absolute bottom-20 right-14 text-2xl opacity-20 pointer-events-none animate-bounce-subtle" style={{ animationDelay: '1200ms' }}>
+        ✨
+      </div>
 
       {/* Top Tag */}
       <div className="pt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-700/40 px-3.5 py-1.5 rounded-full shadow-inner animate-bounce">

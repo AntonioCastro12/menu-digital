@@ -412,9 +412,9 @@ export default function CartDrawer({
               <button
                 type="button"
                 onClick={handleSendOrder}
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2"
+                className="group w-full py-4 px-4 rounded-2xl font-black text-sm text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 transition-all shadow-xl shadow-emerald-600/35 hover:shadow-emerald-600/50 flex items-center justify-center gap-2.5 transform hover:-translate-y-0.5"
               >
-                <MessageCircle className="w-5 h-5 fill-white" />
+                <MessageCircle className="w-5 h-5 fill-white group-hover:rotate-12 transition-transform duration-300 animate-wiggle" />
                 <span>Enviar Pedido por WhatsApp</span>
               </button>
             </div>

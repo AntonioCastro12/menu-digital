@@ -149,10 +149,11 @@ export default function PublicMenu({
       <main className="max-w-4xl mx-auto px-4 py-6 w-full flex-1">
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, idx) => (
               <ProductCard
                 key={product.id}
                 product={product}
+                index={idx}
                 currency={settings?.currency || 'MXN'}
                 onClick={setSelectedProduct}
               />

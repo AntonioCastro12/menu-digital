@@ -12,33 +12,33 @@ export default function Badge({ type, label, size = 'sm' }) {
     case 'promotion':
     case 'promocion':
       return (
-        <span className={`inline-flex items-center gap-1 font-semibold rounded-full bg-red-100 text-red-700 border border-red-200 ${sizeClasses}`}>
-          <Tag className="w-3 h-3" />
-          {label || 'Promoción'}
+        <span className={`inline-flex items-center gap-1 font-bold rounded-full bg-red-100 text-red-700 border border-red-200 shadow-xs ${sizeClasses}`}>
+          <Tag className="w-3 h-3 text-red-600 animate-wiggle" />
+          <span>{label || 'Promoción'}</span>
         </span>
       );
     case 'featured':
     case 'favorito':
       return (
-        <span className={`inline-flex items-center gap-1 font-semibold rounded-full bg-amber-100 text-amber-800 border border-amber-200 ${sizeClasses}`}>
-          <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
-          {label || 'Favorito'}
+        <span className={`inline-flex items-center gap-1 font-bold rounded-full bg-amber-100 text-amber-900 border border-amber-300 shadow-xs ${sizeClasses}`}>
+          <Star className="w-3 h-3 fill-amber-400 text-amber-500 animate-bounce-subtle" />
+          <span>{label || 'Favorito'}</span>
         </span>
       );
     case 'bestSeller':
     case 'masVendido':
       return (
-        <span className={`inline-flex items-center gap-1 font-semibold rounded-full bg-orange-100 text-orange-800 border border-orange-200 ${sizeClasses}`}>
-          <Flame className="w-3 h-3 text-orange-600 fill-orange-500" />
-          {label || 'Más vendido'}
+        <span className={`inline-flex items-center gap-1 font-bold rounded-full bg-orange-100 text-orange-900 border border-orange-300 shadow-xs ${sizeClasses}`}>
+          <Flame className="w-3 h-3 text-orange-600 fill-orange-500 animate-bounce-subtle" />
+          <span>{label || 'Top'}</span>
         </span>
       );
     case 'new':
     case 'nuevo':
       return (
-        <span className={`inline-flex items-center gap-1 font-semibold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 ${sizeClasses}`}>
-          <Sparkles className="w-3 h-3 text-emerald-600" />
-          {label || 'Nuevo'}
+        <span className={`inline-flex items-center gap-1 font-bold rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-xs ${sizeClasses}`}>
+          <Sparkles className="w-3 h-3 text-emerald-600 animate-spin" style={{ animationDuration: '6s' }} />
+          <span>{label || 'Nuevo'}</span>
         </span>
       );
     case 'soldOut':
