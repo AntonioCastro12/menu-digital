@@ -1,0 +1,597 @@
+// Initial seed data for Patitas de Puerco Doña Imelda
+export const INITIAL_SETTINGS = {
+  "name": "Patitas de Puerco Doña Imelda",
+  "tagline": "El autentico sabor casero.",
+  "description": "Patitas de puerco echas totalmente en casa",
+  "address": "Calle Rey Alfonso Xlll, No. 367 Fracc Los Reyes",
+  "phone": "4621472372",
+  "whatsapp": "524621472372",
+  "whatsappMessage": "¡Hola! Quisiera hacer un pedido o consultar disponibilidad desde su Menú Digital.",
+  "hours": "Lun- Dom: 14:00 a 19:00 hrs",
+  "currency": "MXN",
+  "currencySymbol": "$",
+  "isOpen": true,
+  "closedMessage": "Nuestro horario de servicio ha terminado por hoy. Te esperamos mañana a partir de la 1:00 PM.",
+  "logoUrl": "/.netlify/functions/menu-image?id=img_1793036317611_2434fbcd8e21",
+  "bannerUrl": "/.netlify/functions/menu-image?id=img_1793036314607_c14d46a9606f",
+  "showContactInfo": true,
+  "themeColor": "#cd6f3c",
+  "socialInstagram": "@elasadortacos",
+  "socialFacebook": "ElAsadorTacosMX",
+  "updatedAt": "2026-10-26T17:48:07.406Z",
+  "logoId": "img_1793036317611_2434fbcd8e21",
+  "bannerId": "img_1793036314607_c14d46a9606f"
+};
+
+export const INITIAL_CATEGORIES = [
+  {
+    "id": "cat_pastor",
+    "name": "Ordenes de patitas de puerco",
+    "description": "Nuestra especialidad, patitas de puerco caseras.",
+    "sortOrder": 1,
+    "active": true,
+    "createdAt": "2026-10-26T16:48:40.397Z",
+    "updatedAt": "2026-10-26T17:52:27.644Z"
+  },
+  {
+    "id": "cat_1793037973798_stxz",
+    "name": "Tostadas Sencillas",
+    "description": "Tenemos las tostadas para todos los gustos",
+    "sortOrder": 2,
+    "active": true,
+    "createdAt": "2026-10-26T18:06:13.798Z",
+    "updatedAt": "2026-10-26T18:06:47.825Z"
+  },
+  {
+    "id": "cat_1793039074789_aah7",
+    "name": "Tostadas Dobles",
+    "description": "Convina las tostadas, con dos ingrediente  que mas te gusten",
+    "sortOrder": 3,
+    "active": true,
+    "createdAt": "2026-10-26T18:24:34.789Z",
+    "updatedAt": "2026-10-26T18:24:34.789Z"
+  },
+  {
+    "id": "cat_1793039936588_jve8",
+    "name": "Contenedores",
+    "description": "Elge entre todo nuestro menu y los dos tamañanos de contenedor que tenemos, para convinar hasta 4 ingredientes",
+    "sortOrder": 5,
+    "active": true,
+    "createdAt": "2026-10-26T18:38:56.588Z",
+    "updatedAt": "2026-10-26T18:38:56.589Z"
+  },
+  {
+    "id": "cat_1793041289730_i8tr",
+    "name": "Extras",
+    "description": "Por si quieres agregar un extra",
+    "sortOrder": 5,
+    "active": true,
+    "createdAt": "2026-10-26T19:01:29.730Z",
+    "updatedAt": "2026-10-26T19:01:29.730Z"
+  }
+];
+
+export const INITIAL_PRODUCTS = [
+  {
+    "id": "prod_pastor_orden",
+    "name": "Orden Entera de patitas de puerco",
+    "description": "Tortilla de maíz nixtamalizado, carne marinada en achiote con especias, cilantro, cebolla picada y rebanada de piña miel asada.",
+    "price": 110,
+    "categoryId": "cat_pastor",
+    "imageId": "img_1793037284700_998637b816ca",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": true,
+    "isNew": false,
+    "sortOrder": 1,
+    "updatedAt": "2026-10-26T18:50:18.322Z",
+    "ingredients": [
+      "Repollo",
+      "Aguacate",
+      "Salsa Bandera",
+      "Cueritos",
+      "Salsa",
+      "tostadas"
+    ],
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793037847242_qml2",
+    "name": "Media Orden de Patita de Puerco",
+    "description": "Media orde de patita preparada con la receta de la familia.",
+    "price": 70,
+    "categoryId": "cat_pastor",
+    "imageId": "img_1793037847211_8efa7baa0cd6",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": true,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Repollo",
+      "Salsa Bandera",
+      "Aguacate",
+      "Cueritos",
+      "Salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:04:07.242Z",
+    "updatedAt": "2026-10-26T18:04:07.242Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793038169134_oc8s",
+    "name": "Tostada de Queso de Puerco",
+    "description": "Rica tostada de queso de puerco bañada con salsa de la casa.",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793038169087_1be6627f2969",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Agucate",
+      "Salsa Bandera",
+      "Sanahoria",
+      "Repollo",
+      "Frijoles"
+    ],
+    "createdAt": "2026-10-26T18:09:29.134Z",
+    "updatedAt": "2026-10-26T18:09:29.134Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793038350174_ghca",
+    "name": "Tostada Pata Picada",
+    "description": "Pata picada en trozos pequeños, para preparar una tostada sin hueso",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793038350146_6d9393e2f723",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Repollo",
+      "Aguacate",
+      "Zanahoria",
+      "Frijoles",
+      "Salsa Bandera",
+      "Tostadas",
+      "Salsa"
+    ],
+    "createdAt": "2026-10-26T18:12:30.174Z",
+    "updatedAt": "2026-10-26T18:12:57.572Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793038513059_mvo3",
+    "name": "Tostada Ceviche",
+    "description": "Rico ceviche marinado con limon, especias especiales y salsa bandera",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793038513029_e2ff8db7d1e5",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Repollo",
+      "Aguacate",
+      "Zanahoria",
+      "Salsa Bandera",
+      "Salsa"
+    ],
+    "createdAt": "2026-10-26T18:15:13.059Z",
+    "updatedAt": "2026-10-26T18:17:09.792Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793038622840_p3x7",
+    "name": "Tostada de Oreja",
+    "description": "Tostada con oreja finamente cortada",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793038622813_236998b83d99",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Aguacate",
+      "Frijoles",
+      "Salsa Bandera",
+      "Zanahoria",
+      "Repollo",
+      "Salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:17:02.840Z",
+    "updatedAt": "2026-10-26T18:17:02.840Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793038829313_wm63",
+    "name": "Tostada de cueritos",
+    "description": "Tostada con cueritos, preparada con la receta casera",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793038829287_546db46dd0d8",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Aguacate",
+      "Frijoles",
+      "Repollo",
+      "Zanahoria",
+      "Salsa Bandera",
+      "Salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:20:29.313Z",
+    "updatedAt": "2026-10-26T18:20:29.313Z",
+    "customizationMode": "remove",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793039001492_qbfg",
+    "name": "Tostada Carne Tartara",
+    "description": "Tostada de carne tartara, marinada con especias y limon",
+    "price": 30,
+    "categoryId": "cat_1793037973798_stxz",
+    "imageId": "img_1793039001462_f3f1aaa3ad70",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "ingredients": [
+      "Salsa Bandera",
+      "Aguacate",
+      "Zanahoria",
+      "salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:23:21.492Z",
+    "updatedAt": "2026-10-26T19:00:30.594Z",
+    "customizationMode": "remove",
+    "maxCombinations": 2,
+    "minCombinations": 1,
+    "combinationOptions": []
+  },
+  {
+    "id": "prod_1793040150856_m50r",
+    "name": "Tostadas dobles",
+    "description": "Puedes elegir dos opciones de nuestro menu, para disfrutar mas del sabor.",
+    "price": 60,
+    "categoryId": "cat_1793039074789_aah7",
+    "imageId": "img_1793040150820_0e8c042a2948",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "customizationMode": "combine",
+    "maxCombinations": 2,
+    "minCombinations": 1,
+    "combinationOptions": [
+      "Pata picada",
+      "Ceviche",
+      "Oreja",
+      "Cueritos",
+      "Queso de Puerco",
+      "Carne tartara"
+    ],
+    "ingredients": [
+      "Aguacate",
+      "Frijoles",
+      "Salsa Bandera",
+      "Repollo",
+      "salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:42:30.856Z",
+    "updatedAt": "2026-10-26T18:42:30.856Z"
+  },
+  {
+    "id": "prod_1793040613035_3bub",
+    "name": "Contenedor chico",
+    "description": "Contenedor que puedes convinar hasta con 3 ingredientes.",
+    "price": 80,
+    "categoryId": "cat_1793039936588_jve8",
+    "imageId": "img_1793040612997_523ce3dc97a0",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": true,
+    "isNew": false,
+    "sortOrder": 1,
+    "customizationMode": "combine",
+    "maxCombinations": 3,
+    "minCombinations": 1,
+    "combinationOptions": [
+      "Cueritos",
+      "Queso de puerco",
+      "Carne tartara",
+      "Ceviche",
+      "Oreja",
+      "Pata Picada"
+    ],
+    "ingredients": [
+      "Repollo",
+      "Aguacate",
+      "Salsa Bandera",
+      "frijoles",
+      "salsa",
+      "Tostadas"
+    ],
+    "createdAt": "2026-10-26T18:50:13.035Z",
+    "updatedAt": "2026-10-26T18:55:13.007Z"
+  },
+  {
+    "id": "prod_1793040836543_urbe",
+    "name": "Contenedor Grande",
+    "description": "Contenedor grande que se puede convinar hasta con 4 ingredientes diferentes.",
+    "price": 110,
+    "categoryId": "cat_1793039936588_jve8",
+    "imageId": "img_1793040836501_b44a5537f036",
+    "imageUrl": "",
+    "available": true,
+    "featured": true,
+    "promotion": false,
+    "bestSeller": true,
+    "isNew": false,
+    "sortOrder": 1,
+    "customizationMode": "combine",
+    "maxCombinations": 4,
+    "minCombinations": 1,
+    "combinationOptions": [
+      "Ceviche",
+      "Oreja",
+      "Cueritos",
+      "Pata Picada",
+      "Queso de Puerco",
+      "Carne tartara"
+    ],
+    "ingredients": [
+      "Salsa Bandera",
+      "Repollo",
+      "frijoles",
+      "Aguacate",
+      "Tostadas",
+      "Salsa"
+    ],
+    "createdAt": "2026-10-26T18:53:56.543Z",
+    "updatedAt": "2026-10-26T18:55:22.430Z"
+  },
+  {
+    "id": "prod_1793041327654_rdyc",
+    "name": "Salsa",
+    "description": "Bolsa extra de salsa",
+    "price": 10,
+    "categoryId": "cat_1793041289730_i8tr",
+    "imageId": "img_1793041327626_736d96b108e4",
+    "imageUrl": "",
+    "available": true,
+    "featured": false,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "customizationMode": "none",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": [],
+    "ingredients": [],
+    "createdAt": "2026-10-26T19:02:07.655Z",
+    "updatedAt": "2026-10-26T19:05:42.124Z"
+  },
+  {
+    "id": "prod_1793041373037_w1oz",
+    "name": "Tostadas extras",
+    "description": "Bolsita de tostadas extras, para que no te haga falta",
+    "price": 10,
+    "categoryId": "cat_1793041289730_i8tr",
+    "imageId": "img_1793041373007_35e09f326981",
+    "imageUrl": "",
+    "available": true,
+    "featured": false,
+    "promotion": false,
+    "bestSeller": false,
+    "isNew": false,
+    "sortOrder": 1,
+    "customizationMode": "none",
+    "maxCombinations": 0,
+    "minCombinations": 0,
+    "combinationOptions": [],
+    "ingredients": [],
+    "createdAt": "2026-10-26T19:02:53.037Z",
+    "updatedAt": "2026-10-26T19:03:15.445Z"
+  }
+];
+
+export const INITIAL_ORDERS = [
+  {
+    "id": "ord_1793041001_a1",
+    "customerName": "Juan Pérez",
+    "orderType": "dineIn",
+    "tableNumber": "3",
+    "items": [
+      { "name": "Orden Entera de patitas de puerco", "price": 110, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] },
+      { "name": "Salsa", "price": 10, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T17:30:00.000Z"
+  },
+  {
+    "id": "ord_1793041002_b2",
+    "customerName": "Laura Gómez",
+    "orderType": "delivery",
+    "deliveryAddress": "Av. Las Rosas 120, Col. Centro",
+    "items": [
+      { "name": "Contenedor Grande", "price": 110, "quantity": 1, "selectedCombinations": ["Cueritos", "Pata Picada", "Oreja"], "excludedIngredients": [] },
+      { "name": "Tostadas extras", "price": 10, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T16:15:00.000Z"
+  },
+  {
+    "id": "ord_1793041003_c3",
+    "customerName": "Carlos Mendoza",
+    "orderType": "takeout",
+    "items": [
+      { "name": "Media Orden de Patita de Puerco", "price": 70, "quantity": 1, "selectedCombinations": [], "excludedIngredients": ["Salsa Bandera"] },
+      { "name": "Tostada de Queso de Puerco", "price": 30, "quantity": 2, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 130,
+    "itemCount": 3,
+    "status": "completed",
+    "createdAt": "2026-10-26T15:45:00.000Z"
+  },
+  {
+    "id": "ord_1793041004_d4",
+    "customerName": "María Rodríguez",
+    "orderType": "dineIn",
+    "tableNumber": "1",
+    "items": [
+      { "name": "Tostadas dobles", "price": 60, "quantity": 2, "selectedCombinations": ["Pata picada", "Ceviche"], "excludedIngredients": [] }
+    ],
+    "totalAmount": 120,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T15:10:00.000Z"
+  },
+  {
+    "id": "ord_1793041005_e5",
+    "customerName": "Fernando Soto",
+    "orderType": "delivery",
+    "deliveryAddress": "Privada Hidalgo #14",
+    "items": [
+      { "name": "Orden Entera de patitas de puerco", "price": 110, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] },
+      { "name": "Contenedor chico", "price": 80, "quantity": 1, "selectedCombinations": ["Cueritos", "Queso de puerco"], "excludedIngredients": [] }
+    ],
+    "totalAmount": 190,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-26T14:30:00.000Z"
+  },
+  {
+    "id": "ord_1793041006_f6",
+    "customerName": "Patricia Morales",
+    "orderType": "dineIn",
+    "tableNumber": "5",
+    "items": [
+      { "name": "Tostada Pata Picada", "price": 30, "quantity": 3, "selectedCombinations": [], "excludedIngredients": [] },
+      { "name": "Tostadas extras", "price": 10, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 100,
+    "itemCount": 4,
+    "status": "completed",
+    "createdAt": "2026-10-25T18:45:00.000Z"
+  },
+  {
+    "id": "ord_1793041007_g7",
+    "customerName": "Roberto Silva",
+    "orderType": "takeout",
+    "items": [
+      { "name": "Orden Entera de patitas de puerco", "price": 110, "quantity": 2, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 220,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-25T17:20:00.000Z"
+  },
+  {
+    "id": "ord_1793041008_h8",
+    "customerName": "Elena Morales",
+    "orderType": "dineIn",
+    "tableNumber": "2",
+    "items": [
+      { "name": "Media Orden de Patita de Puerco", "price": 70, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] },
+      { "name": "Tostada Ceviche", "price": 30, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 100,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-25T16:00:00.000Z"
+  },
+  {
+    "id": "ord_1793041009_i9",
+    "customerName": "Miguel Ángel Vázquez",
+    "orderType": "delivery",
+    "deliveryAddress": "Calle Morelos 45, Col. Juárez",
+    "items": [
+      { "name": "Contenedor Grande", "price": 110, "quantity": 1, "selectedCombinations": ["Cueritos", "Carne tartara"], "excludedIngredients": [] },
+      { "name": "Contenedor chico", "price": 80, "quantity": 1, "selectedCombinations": ["Ceviche", "Pata Picada"], "excludedIngredients": [] }
+    ],
+    "totalAmount": 190,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-24T18:10:00.000Z"
+  },
+  {
+    "id": "ord_1793041010_j10",
+    "customerName": "Daniela Cruz",
+    "orderType": "dineIn",
+    "tableNumber": "4",
+    "items": [
+      { "name": "Tostada Carne Tartara", "price": 30, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] },
+      { "name": "Tostada de Oreja", "price": 30, "quantity": 1, "selectedCombinations": [], "excludedIngredients": [] }
+    ],
+    "totalAmount": 60,
+    "itemCount": 2,
+    "status": "completed",
+    "createdAt": "2026-10-24T15:20:00.000Z"
+  }
+];

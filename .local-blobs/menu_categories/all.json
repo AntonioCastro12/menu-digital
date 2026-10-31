@@ -1,0 +1,47 @@
+[
+  {
+    "id": "cat_pastor",
+    "name": "Ordenes de patitas de puerco",
+    "description": "Nuestra especialidad, patitas de puerco caseras.",
+    "sortOrder": 1,
+    "active": true,
+    "createdAt": "2026-10-26T16:48:40.397Z",
+    "updatedAt": "2026-10-26T17:52:27.644Z"
+  },
+  {
+    "id": "cat_1793037973798_stxz",
+    "name": "Tostadas Sencillas",
+    "description": "Tenemos las tostadas para todos los gustos",
+    "sortOrder": 2,
+    "active": true,
+    "createdAt": "2026-10-26T18:06:13.798Z",
+    "updatedAt": "2026-10-26T18:06:47.825Z"
+  },
+  {
+    "id": "cat_1793039074789_aah7",
+    "name": "Tostadas Dobles",
+    "description": "Convina las tostadas, con dos ingrediente  que mas te gusten",
+    "sortOrder": 3,
+    "active": true,
+    "createdAt": "2026-10-26T18:24:34.789Z",
+    "updatedAt": "2026-10-26T18:24:34.789Z"
+  },
+  {
+    "id": "cat_1793039936588_jve8",
+    "name": "Contenedores",
+    "description": "Elge entre todo nuestro menu y los dos tamañanos de contenedor que tenemos, para convinar hasta 4 ingredientes",
+    "sortOrder": 5,
+    "active": true,
+    "createdAt": "2026-10-26T18:38:56.588Z",
+    "updatedAt": "2026-10-26T18:38:56.589Z"
+  },
+  {
+    "id": "cat_1793041289730_i8tr",
+    "name": "Extras",
+    "description": "Por si quieres agregar un extra",
+    "sortOrder": 5,
+    "active": true,
+    "createdAt": "2026-10-26T19:01:29.730Z",
+    "updatedAt": "2026-10-26T19:01:29.730Z"
+  }
+]
