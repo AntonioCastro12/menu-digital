@@ -1,4 +1,4 @@
-import { getStore, connectLambda } from '@netlify/blobs';
+import { getStore, connectLambda, setEnvironmentContext } from '@netlify/blobs';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
@@ -37,6 +37,18 @@ export function initBlobs(event) {
   if (event && event.blobs) {
     try {
       connectLambda(event);
+      // connectLambda in @netlify/blobs sets edgeURL but omits uncachedEdgeURL,
+      // which causes BlobsConsistencyError on strong reads. Populate both:
+      const rawData = Buffer.from(event.blobs, 'base64').toString('utf8');
+      const data = JSON.parse(rawData);
+      const headers = event.headers || {};
+      setEnvironmentContext({
+        deployID: headers['x-nf-deploy-id'] || headers['X-Nf-Deploy-Id'],
+        edgeURL: data.url,
+        uncachedEdgeURL: data.uncachedEdgeURL || data.url,
+        siteID: headers['x-nf-site-id'] || headers['X-Nf-Site-Id'],
+        token: data.token
+      });
     } catch (err) {
       console.warn('[Blobs] connectLambda warning:', err.message);
     }
@@ -44,9 +56,9 @@ export function initBlobs(event) {
 }
 
 // Safely obtain a Blobs store reference without throwing if Blobs is unconfigured
-export function getStoreSafe(storeName) {
+export function getStoreSafe(storeName, consistency = 'eventual') {
   try {
-    return getStore({ name: storeName, consistency: 'strong' });
+    return getStore({ name: storeName, consistency });
   } catch (err) {
     return null;
   }
@@ -68,14 +80,22 @@ function ensureWritableDir(subDir = '') {
 
 // Generic get JSON helper with Netlify Blobs and safe local fallbacks
 export async function getStoreJSON(storeName, key, defaultValue = null) {
-  // 1. Try Netlify Blobs
-  const store = getStoreSafe(storeName);
-  if (store) {
+  // 1. Try Netlify Blobs (strong first, fallback to eventual if uncachedEdgeURL is unavailable)
+  const storeStrong = getStoreSafe(storeName, 'strong');
+  if (storeStrong) {
     try {
-      const val = await store.get(key, { type: 'json' });
+      const val = await storeStrong.get(key, { type: 'json' });
       if (val !== null && val !== undefined) return val;
     } catch (err) {
-      console.warn(`[Blobs] Netlify Blobs read error on ${storeName}/${key}, trying fallback:`, err.message);
+      try {
+        const storeEventual = getStoreSafe(storeName, 'eventual');
+        if (storeEventual) {
+          const val = await storeEventual.get(key, { type: 'json' });
+          if (val !== null && val !== undefined) return val;
+        }
+      } catch (err2) {
+        console.warn(`[Blobs] Netlify Blobs read error on ${storeName}/${key}, trying fallback:`, err2.message);
+      }
     }
   }
 

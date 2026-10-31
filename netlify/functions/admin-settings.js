@@ -58,13 +58,26 @@ export async function handler(event, context) {
       ? body.themeColor
       : '#ea580c';
 
+    const existing = await getRestaurantSettings();
     const rawPhone = (body.phone || '').toString().trim().slice(0, 30);
     const rawWa = (body.whatsapp || '').toString().replace(/[^0-9]/g, '').slice(0, 20);
     const phoneDigits = rawPhone.replace(/[^0-9]/g, '');
 
-    // Ensure phone and whatsapp stay automatically synced if one was updated
-    const finalPhone = rawPhone || (rawWa.startsWith('52') && rawWa.length === 12 ? rawWa.slice(2) : rawWa);
-    const finalWhatsapp = rawWa || (phoneDigits.length === 10 ? `52${phoneDigits}` : phoneDigits);
+    // Detect if the user changed only one of the two fields so both update together
+    const phoneChanged = rawPhone && rawPhone !== (existing.phone || '');
+    const waChanged = rawWa && rawWa !== (existing.whatsapp || '');
+
+    let finalPhone = rawPhone;
+    let finalWhatsapp = rawWa;
+
+    if (phoneChanged && !waChanged && phoneDigits.length >= 10) {
+      finalWhatsapp = phoneDigits.length === 10 ? `52${phoneDigits}` : phoneDigits;
+    } else if (waChanged && !phoneChanged && rawWa.length >= 10) {
+      finalPhone = rawWa.startsWith('52') && rawWa.length === 12 ? rawWa.slice(2) : rawWa;
+    } else {
+      finalPhone = rawPhone || (rawWa.startsWith('52') && rawWa.length === 12 ? rawWa.slice(2) : rawWa);
+      finalWhatsapp = rawWa || (phoneDigits.length === 10 ? `52${phoneDigits}` : phoneDigits);
+    }
 
     const cleanSettings = {
       name: body.name.trim().slice(0, 100),
